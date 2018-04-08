@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
@@ -58,7 +59,7 @@ namespace MusicDatabaseManager
             string table_albums = "create table Albums (AlbumID int NOT NULL, ArtistID int, AlbumName varchar(20), ReleaseDate DATE, Genre varchar(20), PRIMARY KEY (AlbumID))";
             string table_artists = "create table Artists (ArtistID int NOT NULL, FirstName varchar(20), LastName varchar(20), StartYear int, PRIMARY KEY (ArtistID))";
             string table_tracks = "create table Tracks (TID int NOT NULL, TrackName varchar(20), Length int, AlbumID int, ArtistID int, PRIMARY KEY (TID))";
-            string table_playlists = "create table Playlists (PID int NOT NULL, Name varchar(20), PRIMARY KEY (PID))";
+            string table_playlists = "create table Playlists (PID int NOT NULL, PlaylistName varchar(20), PRIMARY KEY (PID))";
             string table_isonplaylist = "create table IsOnPlaylist (TID int NOT NULL, PID int NOT NULL, PRIMARY KEY (TID,PID))";
             List<string> tableQueries = new List<string>()
             {
@@ -70,7 +71,7 @@ namespace MusicDatabaseManager
             string album_init = "insert into Albums (AlbumID, ArtistID, AlbumName, ReleaseDate, Genre) values (0, 0, \"Gonna Graduate Soon!\", 2018-04-08, \"Pop\")";
             string artist_init = "insert into Artists (ArtistID, FirstName, LastName, StartYear) values (0, \"Alec\", \"Soto\", 2018)";
             string track_init = "insert into Tracks (TID, TrackName, Length, AlbumID, ArtistID) values (0, \"Working on a Project!\", 60, 0, 0)";
-            string playlist_init = "insert into Playlists (PID, Name) values (0, \"Project working music\")";
+            string playlist_init = "insert into Playlists (PID, PlaylistName) values (0, \"Project working music\")";
             string isonplaylist_init = "insert into IsOnPlaylist (TID, PID) values (0,0)";
             List<string> initializationQueries = new List<string>()
             {
@@ -100,6 +101,9 @@ namespace MusicDatabaseManager
             reader = command.ExecuteReader();
             while (reader.Read())
             {
+                //Test listing all column names in result
+                for (int i = 0; i < reader.FieldCount; i++) { Console.WriteLine(reader.GetOriginalName(i)); }
+
                 Console.WriteLine(reader["TrackName"]);   
             }
 
@@ -113,6 +117,7 @@ namespace MusicDatabaseManager
             reader = command.ExecuteReader();
             while (reader.Read())
             {
+                for (int i = 0; i < reader.FieldCount; i++) { Console.WriteLine(reader.GetOriginalName(i)); }
                 Console.WriteLine("TrackID:" + reader["TID"]);
                 Console.WriteLine("TrackName:" + reader["TrackName"]);
                 Console.WriteLine("ArtistName:" + reader["FirstName"]);
@@ -125,6 +130,7 @@ namespace MusicDatabaseManager
             reader = command.ExecuteReader();
             while (reader.Read())
             {
+                for (int i = 0; i < reader.FieldCount; i++) { Console.WriteLine(reader.GetOriginalName(i)); }
                 Console.WriteLine("TrackID:"+reader["TID"]);
                 Console.WriteLine("TrackName:" + reader["TrackName"]);
                 Console.WriteLine("ArtistName:" + reader["FirstName"]);
