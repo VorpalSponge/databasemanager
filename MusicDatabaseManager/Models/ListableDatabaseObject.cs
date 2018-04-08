@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MusicDatabaseManager.Models
 {
-    class ListableDatabaseObject
+    public class ListableDatabaseObject
     {
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)

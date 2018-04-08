@@ -10,11 +10,17 @@
 
     <DockPanel>
         <DockPanel Height="40" DockPanel.Dock="Top">
-            <Button Content="Submit Query" Height="20" Margin="15,0,15,0" DockPanel.Dock="Right" />
-            <TextBox Height="20" Margin="15,0,0,0" DockPanel.Dock="Left"/>
+            <Button Content="Submit Query" Height="20" Margin="15,0,15,0" DockPanel.Dock="Right" Click="Button_Click"/>
+            <TextBox x:Name="QueryTextbox" Height="20" Margin="15,0,0,0" DockPanel.Dock="Left"/>
         </DockPanel>
-        <ListView>
-
+        <ListView x:Name="PrimaryListView" ItemsSource="{Binding}">
+            <ListView.View>
+                <GridView x:Name="PrimaryGridView">
+                    <GridViewColumn Header="Track Name" Width="100" DisplayMemberBinding="{Binding TrackName}" />
+                    <GridViewColumn Header="Length" Width="100" DisplayMemberBinding="{Binding Length}" />
+                    <GridViewColumn Header="ArtistID" Width="100" DisplayMemberBinding="{Binding ArtistID}" />
+                </GridView>
+            </ListView.View>
         </ListView>
     </DockPanel>
 </Page>

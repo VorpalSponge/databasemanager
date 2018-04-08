@@ -97,7 +97,11 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Album.cs" />
+    <Compile Include="Models\Artist.cs" />
     <Compile Include="Models\ListableDatabaseObject.cs" />
+    <Compile Include="Models\ListableSQLResult.cs" />
+    <Compile Include="Models\Playlist.cs" />
     <Compile Include="Models\Track.cs" />
     <Compile Include="PrimaryView.xaml.cs">
       <DependentUpon>PrimaryView.xaml</DependentUpon>
