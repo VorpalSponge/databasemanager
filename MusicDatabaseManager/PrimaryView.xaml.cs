@@ -23,6 +23,7 @@ namespace MusicDatabaseManager
         public PrimaryView()
         {
             InitializeComponent();
+            DatabaseManager.Test();
         }
     }
 }
