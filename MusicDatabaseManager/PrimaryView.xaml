@@ -13,14 +13,19 @@
             <Button Content="Submit Query" Height="20" Margin="15,0,15,0" DockPanel.Dock="Right" Click="Button_Click"/>
             <TextBox x:Name="QueryTextbox" Height="20" Margin="15,0,0,0" DockPanel.Dock="Left"/>
         </DockPanel>
-        <ListView x:Name="PrimaryListView" ItemsSource="{Binding}">
+        <!--<ListView x:Name="PrimaryListView" ItemsSource="{Binding}">
             <ListView.View>
                 <GridView x:Name="PrimaryGridView">
-                    <GridViewColumn Header="Track Name" Width="100" DisplayMemberBinding="{Binding TrackName}" />
+                    --><!--<GridViewColumn Header="Track Name" Width="100" DisplayMemberBinding="{Binding TrackName}" />
                     <GridViewColumn Header="Length" Width="100" DisplayMemberBinding="{Binding Length}" />
-                    <GridViewColumn Header="ArtistID" Width="100" DisplayMemberBinding="{Binding ArtistID}" />
+                    <GridViewColumn Header="ArtistID" Width="100" DisplayMemberBinding="{Binding ArtistID}" />--><!--
+                    <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Key, Mode=OneWay}"></GridViewColumn>
+                    <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Value, Mode=OneWay}"></GridViewColumn>
                 </GridView>
             </ListView.View>
-        </ListView>
+        </ListView>-->
+        <DataGrid x:Name="SQLResultDataGrid">
+            
+        </DataGrid>
     </DockPanel>
 </Page>

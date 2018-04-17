@@ -41,12 +41,12 @@ namespace MusicDatabaseManager
         {
             //Initialize database and connection
             SQLiteConnection.CreateFile("MyDatabase.sqlite");
-            m_dbConnection = new SQLiteConnection("Data Source=MyDatabase.sqlite;Version=3;");
+            m_dbConnection = new SQLiteConnection("Data Source=MyDatabase.sqlite;Version=3;Allow Zero Datetime=True");
             m_dbConnection.Open();
 
 
             //Establish tables
-            string table_albums = "create table Albums (AlbumID int NOT NULL, ArtistID int, AlbumName varchar(20), ReleaseDate DATE, Genre varchar(20), PRIMARY KEY (AlbumID))";
+            string table_albums = "create table Albums (AlbumID int NOT NULL, ArtistID int, AlbumName varchar(20), ReleaseDate DATETIME, Genre varchar(20), PRIMARY KEY (AlbumID))";
             string table_artists = "create table Artists (ArtistID int NOT NULL, FirstName varchar(20), LastName varchar(20), StartYear int, PRIMARY KEY (ArtistID))";
             string table_tracks = "create table Tracks (TID int NOT NULL, TrackName varchar(20), Length int, AlbumID int, ArtistID int, PRIMARY KEY (TID))";
             string table_playlists = "create table Playlists (PID int NOT NULL, PlaylistName varchar(20), PRIMARY KEY (PID))";
@@ -58,7 +58,7 @@ namespace MusicDatabaseManager
 
 
             //Populate the database with test data
-            string album_init = "insert into Albums (AlbumID, ArtistID, AlbumName, ReleaseDate, Genre) values (0, 0, \"Gonna Graduate Soon!\", 2018-04-08, \"Pop\")";
+            string album_init = "insert into Albums (AlbumID, ArtistID, AlbumName, ReleaseDate, Genre) values (0, 0, \"Gonna Graduate Soon!\", '2018-04-08', \"Pop\")";
             string artist_init = "insert into Artists (ArtistID, FirstName, LastName, StartYear) values (0, \"Alec\", \"Soto\", 2018)";
             string track_init = "insert into Tracks (TID, TrackName, Length, AlbumID, ArtistID) values (0, \"Working on a Project!\", 60, 0, 0)";
             string playlist_init = "insert into Playlists (PID, PlaylistName) values (0, \"Project working music\")";
@@ -83,32 +83,36 @@ namespace MusicDatabaseManager
             }
         }
 
-        public List<Dictionary<string,string>> runSelectQuery(string query= "select * from Tracks")
+        public DataTable runSelectQuery(string query="select * from Tracks")
         {
             List<Dictionary<string, string>> rows = new List<Dictionary<string, string>>();
-            SQLiteDataReader reader;
             SQLiteCommand command = new SQLiteCommand(query, m_dbConnection);
-            reader = command.ExecuteReader();
+            SQLiteDataAdapter sda = new SQLiteDataAdapter(command);
 
-            //Get column names
-            List<string> columnNames = new List<string>();
-            for (int i = 0; i < reader.FieldCount; i++)
-            {
-                columnNames.Add(reader.GetOriginalName(i));
-            }
+            DataTable dt = new DataTable("result");
+            sda.Fill(dt);
+            return dt;
+            //reader = command.ExecuteReader();
 
-            //Enter each row
-            Dictionary<string, string> currentRow;
-            while (reader.Read())
-            {
-                currentRow = new Dictionary<string, string>();
-                foreach(string colName in columnNames)
-                {
-                    currentRow.Add(colName, reader[colName] as string);
-                }
-                rows.Add(currentRow);
-            }
-            return rows;
+            ////Get column names
+            //List<string> columnNames = new List<string>();
+            //for (int i = 0; i < reader.FieldCount; i++)
+            //{
+            //    columnNames.Add(reader.GetOriginalName(i));
+            //}
+
+            ////Enter each row
+            //Dictionary<string, string> currentRow;
+            //while (reader.Read())
+            //{
+            //    currentRow = new Dictionary<string, string>();
+            //    foreach(string colName in columnNames)
+            //    {
+            //        currentRow.Add(colName, reader[colName] as string);
+            //    }
+            //    rows.Add(currentRow);
+            //}
+            //return rows;
         }
 
         public ObservableCollection<Track> runTrackSelectQuery(string query = "select * from Tracks")
@@ -203,11 +207,7 @@ namespace MusicDatabaseManager
             }
 
 
-            string inner_join_select_all = @"select * from Tracks 
-                inner join Artists on Tracks.ArtistID=Artists.ArtistID 
-                inner join Albums on Tracks.AlbumID=Albums.AlbumID 
-                inner join IsOnPlayList on Tracks.TID=IsOnPlayList.TID 
-                inner join Playlists on IsOnPlayList.PID=Playlists.PID";
+            string inner_join_select_all = @"select * from Tracks inner join Artists on Tracks.ArtistID=Artists.ArtistID inner join Albums on Tracks.AlbumID=Albums.AlbumID inner join IsOnPlayList on Tracks.TID=IsOnPlayList.TID inner join Playlists on IsOnPlayList.PID=Playlists.PID";
             command = new SQLiteCommand(inner_join_select_all, m_dbConnection);
             reader = command.ExecuteReader();
             while (reader.Read())

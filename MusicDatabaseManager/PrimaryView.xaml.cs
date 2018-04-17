@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MusicDatabaseManager.Models;
 using System.Collections.ObjectModel;
+using System.Data;
 
 namespace MusicDatabaseManager
 {
@@ -25,32 +26,20 @@ namespace MusicDatabaseManager
     public partial class PrimaryView : Page, INotifyPropertyChanged
     {
         private DatabaseManager dm;
-        private ObservableCollection<Track> _tracks = new ObservableCollection<Track>();
-        public ObservableCollection<Track> Tracks
-        {
-            get { return _tracks; }
-            set { _tracks = value; OnPropertyChanged(); }
-        }
+
         public PrimaryView()
         {
             InitializeComponent();
             dm = DatabaseManager.Instance;
-            PrimaryListView.DataContext = Tracks;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //ObservableCollection<Track> results = dm.runTrackSelectQuery();
-            //Console.WriteLine("Received tracks # " + Tracks.Count);
-            //Tracks = results;
-            //UpdateLayout();
-
-            ObservableCollection<Track> results = dm.runTrackSelectQuery();
-            Console.WriteLine("Received tracks # " + Tracks.Count);
-            foreach( Track t in results)
-            {
-                Tracks.Add(t);
-            }
+            string q = QueryTextbox.Text;
+            Console.WriteLine("Received query: '" + q + "'");
+            DataTable results = dm.runSelectQuery(q);
+            SQLResultDataGrid.ItemsSource = null;
+            SQLResultDataGrid.ItemsSource = results.DefaultView;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -61,4 +50,4 @@ namespace MusicDatabaseManager
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-    }
+}
