@@ -23,7 +23,7 @@ namespace MusicDatabaseManager
     /// <summary>
     /// Interaction logic for PrimaryView.xaml
     /// </summary>
-    public partial class PrimaryView : Page, INotifyPropertyChanged
+    public partial class PrimaryView : TabItem/*, INotifyPropertyChanged*/
     {
         private DatabaseManager dm;
 
@@ -42,12 +42,12 @@ namespace MusicDatabaseManager
             SQLResultDataGrid.ItemsSource = results.DefaultView;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            //C# 6 null-safe operator. No need to check for event listeners
-            //If there are no listeners, this will be a noop
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        //public event PropertyChangedEventHandler PropertyChanged;
+        //protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        //{
+        //    //C# 6 null-safe operator. No need to check for event listeners
+        //    //If there are no listeners, this will be a noop
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //}
     }
 }

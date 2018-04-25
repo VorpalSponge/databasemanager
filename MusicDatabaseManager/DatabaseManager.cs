@@ -82,37 +82,30 @@ namespace MusicDatabaseManager
                 command.ExecuteNonQuery();
             }
         }
+        public DataTable retrieveTable(string table)
+        {
+            SQLiteCommand command = new SQLiteCommand("select * from "+table, m_dbConnection);
+            SQLiteDataAdapter sda = new SQLiteDataAdapter(command);
+
+            DataTable dt = new DataTable("result");
+            sda.Fill(dt);
+            return dt;
+        }
+
+        public void runQueryWithNoResult(string query)
+        {
+            SQLiteCommand command = new SQLiteCommand(query, m_dbConnection);
+            command.ExecuteNonQuery();
+        }
 
         public DataTable runSelectQuery(string query="select * from Tracks")
         {
-            List<Dictionary<string, string>> rows = new List<Dictionary<string, string>>();
             SQLiteCommand command = new SQLiteCommand(query, m_dbConnection);
             SQLiteDataAdapter sda = new SQLiteDataAdapter(command);
 
             DataTable dt = new DataTable("result");
             sda.Fill(dt);
             return dt;
-            //reader = command.ExecuteReader();
-
-            ////Get column names
-            //List<string> columnNames = new List<string>();
-            //for (int i = 0; i < reader.FieldCount; i++)
-            //{
-            //    columnNames.Add(reader.GetOriginalName(i));
-            //}
-
-            ////Enter each row
-            //Dictionary<string, string> currentRow;
-            //while (reader.Read())
-            //{
-            //    currentRow = new Dictionary<string, string>();
-            //    foreach(string colName in columnNames)
-            //    {
-            //        currentRow.Add(colName, reader[colName] as string);
-            //    }
-            //    rows.Add(currentRow);
-            //}
-            //return rows;
         }
 
         public ObservableCollection<Track> runTrackSelectQuery(string query = "select * from Tracks")
